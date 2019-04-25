@@ -1,59 +1,55 @@
-version: 2.0
-
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
 jobs:
-    build:
-        docker:
-            - image: circleci/openjdk:8-jdk-browsers
-            - image: circleci/postgres:9.4
-              # Specify service dependencies here if necessary
-              # CircleCI maintains a library of pre-built images
-              # documented at https://circleci.com/docs/2.0/circleci-images/
-              # - image: circleci/postgres:9.4
-              # Specify service dependencies here if necessary
-              # CircleCI maintains a library of pre-built images
-              # documented at https://circleci.com/docs/2.0/circleci-images/
-              # - image: circleci/postgres:9.4
-              working_directory: ~/.
-            - environment:
-              # Customize the JVM maximum heap limit
-              MAVEN_OPTS: -Xmx3200m
-              POSTGRES_DB: circle_test
-        steps:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
+      - image: circleci/postgres:9.4
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
 
-            - checkout
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
 
-            - restore_cache:
-                  key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+    working_directory: ~/repo
 
-            - run: sudo apt install postgresql-client
-            - run: mvn dependency:go-offline
-            - run:
-                name: Wait for Postgres to start
-                command: dockerize -wait tcp://localhost:5432 -timeout 1m
-            - run:
-                name: Preapare db
-                command: psql -h 127.0.0.1 -U postgres -c "CREATE USER username WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE circle_test TO username;"
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+      POSTGRES_DB: circle_test
 
-            - save_cache:
-                  paths:
-                      - ~/.m2
-                  key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-            #runt test
-            - run: mvn integration-test -Dspring.profiles.active=circleci
+      - run: mvn dependency:go-offline
+      - run: sudo apt install postgresql-client
+      - run:
+          name: Wait for Postgres to start
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Preapare db
+          command: psql -h 127.0.0.1 -U postgres -c "CREATE USER username WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE circle_test TO username;"
 
-            - store_test_results:
-                  path: target/surefire-reports
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
 
-            - store_artifacts:
-                  path: target/bookmanagement.jar
-destination: libs
+      # run tests!
+      - run: mvn integration-test -Dspring.profiles.active=circleci
 
-general:
-    artifacts:
-        - "build/reports/jacoco"
 
-test:
-    post:
-        - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-        - bash <(curl -s https://codecov.io/bash)
