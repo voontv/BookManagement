@@ -17,6 +17,7 @@ public class BookManagementApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println("Test");
 	}
 
 }
