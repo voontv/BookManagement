@@ -1,4 +1,4 @@
-package com.example.BookManagement.models;
+package com.example.BookManagement.models.Dao;
 
 import lombok.Data;
 import lombok.NonNull;
