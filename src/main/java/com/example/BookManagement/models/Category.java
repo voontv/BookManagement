@@ -5,19 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
 
 @Data
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Author {
-
+@Table(name = "category")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
