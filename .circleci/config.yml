@@ -52,4 +52,3 @@ jobs:
       # run tests!
       - run: mvn integration-test -Dspring.profiles.active=circleci
 
-
