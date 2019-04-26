@@ -1,16 +1,13 @@
-package com.example.BookManagement.models;
+package com.example.BookManagement.models.dao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
