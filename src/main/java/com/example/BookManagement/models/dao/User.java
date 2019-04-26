@@ -1,8 +1,7 @@
-package com.example.BookManagement.models.Dao;
+package com.example.BookManagement.models.dao;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.annotations.ValueGenerationType;
 
 import javax.persistence.*;
 
