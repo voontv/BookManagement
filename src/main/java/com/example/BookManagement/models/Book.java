@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -17,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NonNull
     int id;
 
     @Column(nullable = false)
@@ -24,11 +27,12 @@ public class Book {
     @NotBlank(message = "Name is mandatory")
     String title;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     Author author;
 
-    @OneToMany
-    Category category;
+    @ManyToMany
+    Set<Category> category = new HashSet<Category>();
 
     @Column(nullable = false)
     @NonNull
