@@ -1,4 +1,4 @@
-package com.example.BookManagement.models;
+package com.example.BookManagement.models.dao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
