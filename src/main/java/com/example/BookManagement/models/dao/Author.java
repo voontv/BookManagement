@@ -25,7 +25,4 @@ public class Author {
     @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @OneToMany
-    private Set<Book> books;
 }

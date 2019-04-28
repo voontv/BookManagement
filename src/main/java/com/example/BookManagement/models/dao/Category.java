@@ -24,7 +24,4 @@ public class Category {
     @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
-
-    @ManyToMany
-    private  Set<Book> books;
 }
