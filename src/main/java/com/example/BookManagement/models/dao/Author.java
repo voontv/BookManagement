@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @Entity
@@ -24,4 +25,7 @@ public class Author {
     @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
+
+    @OneToMany
+    private Set<Book> bookSet;
 }

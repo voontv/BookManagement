@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,4 +24,7 @@ public class Category {
     @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
+
+    @ManyToMany
+    private  Set<Book> books;
 }
