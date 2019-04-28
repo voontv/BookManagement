@@ -21,7 +21,6 @@ public class Author {
     private int id;
 
     @Column(nullable = false)
-    @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
 }

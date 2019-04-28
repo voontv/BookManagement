@@ -1,4 +1,4 @@
-package com.example.BookManagement.models;
+package com.example.BookManagement.models.dao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,6 @@ public class Category {
     private int id;
 
     @Column(nullable = false)
-    @NonNull
     @NotBlank(message = "Name is mandatory")
     private String name;
 }
