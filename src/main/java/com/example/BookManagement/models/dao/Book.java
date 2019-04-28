@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,12 +33,12 @@ public class Book {
     Author author;
 
     @ManyToMany
-    Set<Category> categorys = new HashSet<Category>();
+    Set<Category> categories = new HashSet<Category>();
 
     @Column(nullable = false)
     @NonNull
     @Min(value = 1980,message = "Invalid year")
-    @Max(value = 2019,message = "Invalid  year")
+    @Max(value = 2020,message = "Invalid  year")
     int publishYear;
 
     @Column(nullable = false)
@@ -50,8 +51,7 @@ public class Book {
 
     @Column(nullable =  false)
     @NonNull
-    @NotBlank(message = "Value is mandatory")
-    String createdAt;
+    Date createdAt;
 
-    String updateAt;
+    Date updateAt;
 }

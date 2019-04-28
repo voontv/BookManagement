@@ -27,5 +27,5 @@ public class Author {
     private String name;
 
     @OneToMany
-    private Set<Book> bookSet;
+    private Set<Book> books;
 }

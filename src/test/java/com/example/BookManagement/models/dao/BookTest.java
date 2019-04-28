@@ -1,7 +1,9 @@
 package com.example.BookManagement.models.dao;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.validation.Validator;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,16 +25,17 @@ public class BookTest {
     @Autowired
     private Validator validator;
     private Book book;
+    private Date date = new Date(1988,11,21);;
 
     @Test
     public void testOk() {
-        book = new Book(1,"Must be try learn",2008,98,"voontv");
+        book = new Book(1,"Must be try learn",2008,98,date);
         Assert.assertTrue(validator.validate(book).isEmpty());
     }
 
     @Test
     public void testName() {
-        book = new Book(1,"Must be try learn",2008,98,"voontv");
+        book = new Book(1,"Must be try learn",2008,98,date);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setTitle("");
@@ -43,19 +47,19 @@ public class BookTest {
 
     @Test
     public void testPublicYear() {
-        book = new Book(1,"Must be try learn",2008,98,"voontv");
+        book = new Book(1,"Must be try learn",2008,98,date);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setPublishYear(1978);
         Assert.assertFalse(validator.validate(book).isEmpty());
 
-        book.setPublishYear(2020);
+        book.setPublishYear(2021);
         Assert.assertFalse(validator.validate(book).isEmpty());
     }
 
     @Test
     public void testPrice() {
-        book = new Book(1,"Must be try learn",2008,98,"voontv");
+        book = new Book(1,"Must be try learn",2008,98,date);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setPrice(-9);
