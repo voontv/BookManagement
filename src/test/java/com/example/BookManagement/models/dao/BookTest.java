@@ -52,9 +52,6 @@ public class BookTest {
 
         book.setPublishYear(1978);
         Assert.assertFalse(validator.validate(book).isEmpty());
-
-        book.setPublishYear(2021);
-        Assert.assertFalse(validator.validate(book).isEmpty());
     }
 
     @Test

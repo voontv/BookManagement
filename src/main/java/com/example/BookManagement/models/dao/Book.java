@@ -21,12 +21,12 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
-    int id;
+    private int id;
 
     @Column(nullable = false)
     @NonNull
     @NotBlank(message = "Name is mandatory")
-    String title;
+    private String title;
 
     @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
@@ -38,20 +38,19 @@ public class Book {
     @Column(nullable = false)
     @NonNull
     @Min(value = 1980,message = "Invalid year")
-    @Max(value = 2020,message = "Invalid  year")
-    int publishYear;
+    private int publishYear;
 
     @Column(nullable = false)
     @NonNull
-    @Min(value = 0,message = "Invalid price")
-    int price;
+    @Min(value = 0, message = "Invalid price")
+    private int price;
 
-    String description;
-    String cover;
+    private String description;
+    private  String cover;
 
-    @Column(nullable =  false)
+    @Column(nullable = false)
     @NonNull
-    Date createdAt;
+    private Date createdAt;
 
-    Date updateAt;
+    private Date updateAt;
 }
