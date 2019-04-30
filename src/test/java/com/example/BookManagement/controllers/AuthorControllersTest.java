@@ -56,7 +56,7 @@ public class AuthorControllersTest {
 
     @Test
     public void testGetAll() throws Exception {
-        mockMvc.perform(get("/api/authors/all"))
+        mockMvc.perform(get("/api/authors"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -70,23 +70,7 @@ public class AuthorControllersTest {
     @Test
     public void testGetAllNull()  throws Exception {
         authorRepository.deleteAll();
-        mockMvc.perform(get("/api/authors/all"))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void testGetNameContaining() throws Exception {
-        mockMvc.perform(get("/api/authors/name?name=Van"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(1)))
-                .andExpect(jsonPath("$[0].name", Matchers.equalTo("Truong Van Voon")));
-    }
-
-    @Test
-    public void testGetNameContainingNull() throws Exception {
-        mockMvc.perform(get("/api/authors/name?name=Kyaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+        mockMvc.perform(get("/api/authors"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -131,7 +115,7 @@ public class AuthorControllersTest {
         author.setName("Nguyen Thi Thu Thuy");
         String json = gson.toJson(author);
 
-        mockMvc.perform(put("/api/authors/name")
+        mockMvc.perform(put("/api/authors")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
         Assert.assertEquals(author.getName(), "Nguyen Thi Thu Thuy");

@@ -9,11 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
-
-    List<Author> getAllByNameContains(String name);
-
-    @Transactional
-    @Modifying
-    @Query("update Author set name = :newName where id = :id")
-    void updateName(int id, String newName);
 }

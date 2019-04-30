@@ -9,34 +9,26 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
     @Autowired
     private AuthorRepository authorRepository;
-    @GetMapping("/all")
-    List<Author> getAll() {
-
-        if(!authorRepository.findAll(Sort.by(Sort.Order.asc("id"))).isEmpty()) {
-            return  authorRepository.findAll(Sort.by(Sort.Order.asc("id")));
+    @GetMapping()
+    List<Author> get() {
+        List<Author> authors = authorRepository.findAll(Sort.by("id"));
+        if(!authors.isEmpty()) {
+            return  authors;
         }
         throw new NotFoundException("Database is null");
     }
 
-    @GetMapping("/name")
-    List<Author> getName(@RequestParam String name) {
-
-        if(!authorRepository.getAllByNameContains(name).isEmpty()) {
-            return authorRepository.getAllByNameContains(name);
-        }
-        throw new NotFoundException(String.format("Name %s can not found in database",name));
-    }
-
     @GetMapping("/{id}")
-    Author getId(@PathVariable int id) {
-
-        if(authorRepository.findById(id).isPresent()) {
+    Author get(@PathVariable int id) {
+        Optional<Author> author = authorRepository.findById(id);
+        if(authorRepository.existsById(id)) {
             return authorRepository.findById(id).get();
         }
         throw new NotFoundException(String.format("Author id %d not found",id));
@@ -47,7 +39,7 @@ public class AuthorController {
             authorRepository.save(author);
     }
 
-    @PutMapping("/name")
+    @PutMapping()
     void  put(@RequestBody Author author) {
         authorRepository.save(author);
     }
