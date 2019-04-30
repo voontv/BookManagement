@@ -68,14 +68,6 @@ public class AuthorControllersTest {
     }
 
     @Test
-    public void testGetAllNull()  throws Exception {
-        authorRepository.deleteAll();
-        mockMvc.perform(get("/api/authors"))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void testGetIdFound() throws Exception {
         mockMvc.perform(get("/api/authors/"+author1.getId()))
                 .andDo(print())

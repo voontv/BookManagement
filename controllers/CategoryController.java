@@ -1,5 +1,6 @@
 package com.example.BookManagement.controllers;
 
+import com.example.BookManagement.converters.bases.Converter;
 import com.example.BookManagement.exceptions.NotFoundException;
 import com.example.BookManagement.models.dao.Category;
 import com.example.BookManagement.repositories.CategoryRepository;
@@ -16,30 +17,36 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private Converter<Category, CategoryDTO> categoryCategoryDTOConverter;
+
+    @Autowired
+    private Converter<CategoryDTO, Category> categoryDTOCategoryConverter;
+
     @GetMapping()
-    List<Category> get() {
-        return categoryRepository.findAll(Sort.by("id"));
+    List<CategoryDTO> get() {
+        return categoryCategoryDTOConverter.convert(categoryRepository.findAll(Sort.by("id")));
     }
 
     @GetMapping("/{id}")
-    Category get(@PathVariable int id) {
+    CategoryDTO get(@PathVariable int id) {
 
         if(categoryRepository.existsById(id))
         {
-            return categoryRepository.findById(id).get();
+            return categoryCategoryDTOConverter.convert(categoryRepository.findById(id).get());
         } else {
             throw new NotFoundException(String.format("Category have id %d not found",id));
         }
     }
 
     @PostMapping()
-    void post(@RequestBody Category category) {
-        categoryRepository.save(category);
+    void post(@RequestBody CategoryDTO categoryDTO) {
+        categoryRepository.save(categoryDTOCategoryConverter.convert(categoryDTO));
     }
 
     @PutMapping
-    void put(@RequestBody Category category) {
-        categoryRepository.save(category);
+    void put(@RequestBody CategoryDTO categoryDTO) {
+        categoryRepository.save(categoryDTOCategoryConverter.convert(categoryDTO));
     }
 
     @DeleteMapping("/{id}")

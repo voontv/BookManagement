@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/authors")
@@ -27,13 +28,19 @@ public class AuthorController {
 
     @GetMapping()
     List<AuthorDTO> get() {
-        return  authorAuthorDTOConverter.convert(authorRepository.findAll(Sort.by("id")));
+        List<Author> authors = authorRepository.findAll(Sort.by("id"));
+
+        if(!authors.isEmpty()) {
+            return  authorAuthorDTOConverter.convert(authors);
+        }
+        throw new NotFoundException("Database is null");
     }
 
     @GetMapping("/{id}")
     AuthorDTO get(@PathVariable int id) {
+        Optional<Author> author = authorRepository.findById(id);
 
-        if(authorRepository.findById(id).isPresent()) {
+        if(authorRepository.existsById(id)) {
             return authorAuthorDTOConverter.convert(authorRepository.findById(id).get());
         }
         throw new NotFoundException(String.format("Author id %d not found",id));
@@ -44,7 +51,7 @@ public class AuthorController {
         authorRepository.save(authorDTOAuthorConverter.convert(authorDTO));
     }
 
-    @PutMapping
+    @PutMapping()
     void  put(@RequestBody AuthorDTO authorDTO) {
         authorRepository.save(authorDTOAuthorConverter.convert(authorDTO));
     }
@@ -52,7 +59,7 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     void deleted(@PathVariable int id) {
 
-       if(!authorRepository.findById(id).isPresent()) {
+       if(!authorRepository.existsById(id)) {
            throw new NotFoundException(String.format("Author have id %d not found",id));
        }
        authorRepository.deleteById(id);
