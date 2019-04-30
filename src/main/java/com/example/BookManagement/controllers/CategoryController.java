@@ -18,12 +18,7 @@ public class CategoryController {
 
     @GetMapping()
     List<Category> get() {
-
-        if(categoryRepository.findAll().isEmpty()) {
-            throw new NotFoundException("Database is null now");
-        } else {
-            return categoryRepository.findAll(Sort.by("id"));
-        }
+        return categoryRepository.findAll(Sort.by("id"));
     }
 
     @GetMapping("/{id}")

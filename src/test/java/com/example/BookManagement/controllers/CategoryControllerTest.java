@@ -71,15 +71,6 @@ public class CategoryControllerTest {
     }
 
     @Test
-    public void testGetNotFound() throws Exception {
-        
-        categoryRepository.deleteAll();
-
-        mockMvc.perform(get("/api/categories"))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void testGetIdFound() throws  Exception {
 
         mockMvc.perform(get("/api/categories/"+category1.getId()))
