@@ -14,11 +14,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
+
     @Autowired
     private AuthorRepository authorRepository;
+
     @GetMapping()
     List<Author> get() {
         List<Author> authors = authorRepository.findAll(Sort.by("id"));
+
         if(!authors.isEmpty()) {
             return  authors;
         }
@@ -28,6 +31,7 @@ public class AuthorController {
     @GetMapping("/{id}")
     Author get(@PathVariable int id) {
         Optional<Author> author = authorRepository.findById(id);
+
         if(authorRepository.existsById(id)) {
             return authorRepository.findById(id).get();
         }
