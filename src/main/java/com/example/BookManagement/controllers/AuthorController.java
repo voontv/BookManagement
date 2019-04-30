@@ -41,12 +41,18 @@ public class AuthorController {
 
     @PostMapping
     void post(@Valid @RequestBody AuthorDTO authorDTO) {
+        authorDTO.setId(0);
         authorRepository.save(authorDTOAuthorConverter.convert(authorDTO));
     }
 
     @PutMapping
     void  put(@RequestBody AuthorDTO authorDTO) {
-        authorRepository.save(authorDTOAuthorConverter.convert(authorDTO));
+
+        if(!authorRepository.findById(authorDTO.getId()).isPresent()) {
+            throw new NotFoundException(String.format("Author have id %d not found",authorDTO.getId()));
+        } else {
+            authorRepository.save(authorDTOAuthorConverter.convert(authorDTO));
+        }
     }
 
     @DeleteMapping("/{id}")

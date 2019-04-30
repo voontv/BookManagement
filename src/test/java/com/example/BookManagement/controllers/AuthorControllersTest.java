@@ -102,7 +102,7 @@ public class AuthorControllersTest {
     }
 
     @Test
-    public void testPutIdNameFound() throws Exception {
+    public void testPutFound() throws Exception {
         Gson gson = new Gson();
         author.setName("Nguyen Thi Thu Thuy");
         String json = gson.toJson(author);
@@ -113,6 +113,16 @@ public class AuthorControllersTest {
         Assert.assertEquals(author.getName(), "Nguyen Thi Thu Thuy");
     }
 
+    @Test
+    public void testPutNotFound() throws Exception {
+        Gson gson = new Gson();
+        Author author = new Author(34,"Tran Tuan Anh");
+        String json = gson.toJson(author);
+
+        mockMvc.perform(put("/api/authors")
+                .contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isNotFound());
+    }
     @Test
     public void testDeleteNotFound() throws Exception {
         mockMvc.perform(delete("/api/authors/"+author.getId()+author1.getId()))
