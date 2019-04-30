@@ -17,7 +17,7 @@ import javax.validation.Validator;
 @SpringBootTest
 @AutoConfigureMockMvc
 @WebAppConfiguration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
 public class CategoryTest {
 
     @Autowired

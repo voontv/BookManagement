@@ -1,9 +1,7 @@
 package com.example.BookManagement.models.dao;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,19 +11,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.validation.Validator;
+import java.util.Calendar;
 import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @WebAppConfiguration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
 public class BookTest {
 
     @Autowired
     private Validator validator;
     private Book book;
-    private Date date = new Date(1988,11,21);;
+    private Date date = new Date(1988, Calendar.DECEMBER,21);
 
     @Test
     public void testOk() {
