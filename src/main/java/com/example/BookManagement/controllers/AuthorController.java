@@ -21,8 +21,9 @@ public class AuthorController {
         List<Author> authors = authorRepository.findAll(Sort.by("id"));
         if(!authors.isEmpty()) {
             return  authors;
+        } else {
+            throw new NotFoundException("Database is null");
         }
-        throw new NotFoundException("Database is null");
     }
 
     @GetMapping("/{id}")
@@ -30,13 +31,14 @@ public class AuthorController {
         Optional<Author> author = authorRepository.findById(id);
         if(authorRepository.existsById(id)) {
             return authorRepository.findById(id).get();
+        } else {
+            throw new NotFoundException(String.format("Author id %d not found",id));
         }
-        throw new NotFoundException(String.format("Author id %d not found",id));
     }
 
     @PostMapping
     void post(@Valid @RequestBody Author author) {
-            authorRepository.save(author);
+        authorRepository.save(author);
     }
 
     @PutMapping()

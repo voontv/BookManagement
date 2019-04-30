@@ -56,6 +56,7 @@ public class AuthorControllersTest {
 
     @Test
     public void testGetAll() throws Exception {
+
         mockMvc.perform(get("/api/authors"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -69,6 +70,7 @@ public class AuthorControllersTest {
 
     @Test
     public void testGetAllNull()  throws Exception {
+
         authorRepository.deleteAll();
         mockMvc.perform(get("/api/authors"))
                 .andDo(print())
@@ -77,6 +79,7 @@ public class AuthorControllersTest {
 
     @Test
     public void testGetIdFound() throws Exception {
+
         mockMvc.perform(get("/api/authors/"+author1.getId()))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -86,6 +89,7 @@ public class AuthorControllersTest {
 
     @Test
     public void testGetIdNotFound() throws Exception {
+
         mockMvc.perform(get("/api/authors/"+author.getId()+author1.getId()))
                 .andExpect(status().isNotFound());
     }
@@ -112,12 +116,14 @@ public class AuthorControllersTest {
     @Test
     public void testPutIdNameFound() throws Exception {
         Gson gson = new Gson();
+
         author.setName("Nguyen Thi Thu Thuy");
         String json = gson.toJson(author);
 
         mockMvc.perform(put("/api/authors")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
+
         Assert.assertEquals(author.getName(), "Nguyen Thi Thu Thuy");
     }
 
