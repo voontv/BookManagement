@@ -14,21 +14,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
+
     @Autowired
     private AuthorRepository authorRepository;
+
     @GetMapping()
     List<Author> get() {
-        List<Author> authors = authorRepository.findAll(Sort.by("id"));
-        if(!authors.isEmpty()) {
-            return  authors;
-        } else {
-            throw new NotFoundException("Database is null");
-        }
+        return  authorRepository.findAll(Sort.by("id"));
     }
 
     @GetMapping("/{id}")
     Author get(@PathVariable int id) {
-        Optional<Author> author = authorRepository.findById(id);
+
         if(authorRepository.existsById(id)) {
             return authorRepository.findById(id).get();
         } else {
@@ -51,7 +48,8 @@ public class AuthorController {
 
        if(!authorRepository.existsById(id)) {
            throw new NotFoundException(String.format("Author have id %d not found",id));
+       } else {
+           authorRepository.deleteById(id);
        }
-       authorRepository.deleteById(id);
    }
 }
