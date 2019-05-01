@@ -6,7 +6,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -33,7 +32,7 @@ public class Book {
     Author author;
 
     @ManyToMany
-    Set<Category> categories = new HashSet<Category>();
+    Set<Category> categories = new HashSet<>();
 
     @Column(nullable = false)
     @NonNull
