@@ -14,10 +14,10 @@ import javax.validation.constraints.NotBlank;
 public class AuthorDTO {
 
     @NonNull
-    int id;
+    private int id;
 
     @NonNull
     @NotBlank(message = "Name is mandatory")
-    @Length(min = 6, max = 12)
-    String name;
+    @Length(min = 1, max = 255)
+    private String name;
 }
