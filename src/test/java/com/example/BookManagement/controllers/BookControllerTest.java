@@ -1,6 +1,5 @@
 package com.example.BookManagement.controllers;
 
-import com.example.BookManagement.converters.bases.Converter;
 import com.example.BookManagement.models.dao.Book;
 import com.example.BookManagement.models.dto.BookDTO;
 import com.example.BookManagement.repositories.BookRepository;
@@ -20,12 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -39,31 +39,19 @@ public class BookControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private Converter<BookDTO, Book> bookDTOBookConverter;
-
-    @Autowired
     private BookRepository bookRepository;
+
     private Book book1;
     private Book book2;
-    private BookDTO bookDTO1;
-    private BookDTO bookDTO2;
-
-    private LocalDate localDate =  LocalDate.of(2017, 1, 13);
-
-
-    private LocalDate localDate1 = LocalDate.of(1989, 12, 16);  ;
 
     @Before
     public void InitData() {
 
-        book1 = new Book(1,"no pain no gain",1989,86, localDate);
+        book1 = new Book(1,"no pain no gain",1989,86, new Date());
         book1 = bookRepository.save(book1);
 
-        book2 = new Book(2,"try try and try",1990,200, localDate);
+        book2 = new Book(2,"try try and try",1990,200, new Date());
         book2 = bookRepository.save(book2);
-
-        bookDTO1 = new BookDTO(6,"try try and try",2018,200, localDate1);
-        bookDTO2 = new BookDTO(7,"try try and try",2019,138, localDate1);
     }
 
     @After
@@ -105,7 +93,7 @@ public class BookControllerTest {
     @Test
     public void testGetIdNotFound() throws Exception {
 
-        mockMvc.perform(get("/api/books/"+bookDTO1.getId()))
+        mockMvc.perform(get("/api/books/9999"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -122,7 +110,7 @@ public class BookControllerTest {
     @Test
     public void testDeleteNotFound() throws Exception {
 
-        mockMvc.perform(delete("/api/books/"+bookDTO1.getId()*1000))
+        mockMvc.perform(delete("/api/books/"+9999))
                 .andExpect(status().isNotFound());
     }
 
@@ -130,8 +118,8 @@ public class BookControllerTest {
     public void testPost() throws Exception {
         Gson gson = new Gson();
 
-        bookDTO1 = new BookDTO(6,"try try and try",2018,200, localDate1);
-        String json = gson.toJson(bookDTO1);
+        BookDTO bookDTO = new BookDTO(6,"try try and try",2018,200, new Date());
+        String json = gson.toJson(bookDTO);
 
         mockMvc.perform(post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
@@ -139,17 +127,16 @@ public class BookControllerTest {
 
         List<Book> books = bookRepository.findAll(Sort.by("publishYear"));
         assertEquals(books.size(), 3);
-        assertEquals(books.get(2).getPublishYear(), bookDTO1.getPublishYear());
-        assertEquals(books.get(2).getTitle(), bookDTO1.getTitle());
+        assertEquals(books.get(2).getPublishYear(), bookDTO.getPublishYear());
+        assertEquals(books.get(2).getTitle(), bookDTO.getTitle());
     }
 
     @Test
     public void testPutFound() throws Exception {
         Gson gson = new Gson();
 
-        String json = gson.toJson(bookDTO2);
-
-        System.out.println("json "+json);
+        BookDTO bookDTO = new BookDTO(book1.getId(),"Try learn Java, good for skill",2019,138, new Date());
+        String json = gson.toJson(bookDTO);
 
         mockMvc.perform(put("/api/books")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
@@ -162,10 +149,10 @@ public class BookControllerTest {
     @Test
     public void testPutNotFound() throws Exception {
         Gson gson = new Gson();
-        String json = gson.toJson(bookDTO2);
-        System.out.println("json "+json);
-        System.out.println("json  "+json);
-        mockMvc.perform(post("/api/books")
+        BookDTO bookDTO = new BookDTO(10000,"Try learn Java, good for skill",2019,138, new Date());
+
+        String json = gson.toJson(bookDTO);
+        mockMvc.perform(put("/api/books")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isNotFound());
     }
