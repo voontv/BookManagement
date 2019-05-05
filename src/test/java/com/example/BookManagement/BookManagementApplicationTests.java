@@ -12,7 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringBootTest
 @AutoConfigureMockMvc
 @WebAppConfiguration
-@EnableAutoConfiguration(exclude = {org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
+@EnableAutoConfiguration
 public class BookManagementApplicationTests {
 
 	@Test
