@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.validation.Validator;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,17 +23,17 @@ public class BookTest {
     @Autowired
     private Validator validator;
     private Book book;
-    private Date date = new Date(1988, Calendar.DECEMBER,21);
+    private LocalDate localDate = LocalDate.of(2017, 1, 13);
 
     @Test
     public void testOk() {
-        book = new Book(1,"Must be try learn",2008,98,date);
+        book = new Book(1, "Must be try learn", 2008, 98, localDate);
         Assert.assertTrue(validator.validate(book).isEmpty());
     }
 
     @Test
     public void testName() {
-        book = new Book(1,"Must be try learn",2008,98,date);
+        book = new Book(1,"Must be try learn",2008,98, localDate);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setTitle("");
@@ -46,7 +45,7 @@ public class BookTest {
 
     @Test
     public void testPublicYear() {
-        book = new Book(1,"Must be try learn",2008,98,date);
+        book = new Book(1,"Must be try learn",2008,98, localDate);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setPublishYear(1978);
@@ -55,7 +54,7 @@ public class BookTest {
 
     @Test
     public void testPrice() {
-        book = new Book(1,"Must be try learn",2008,98,date);
+        book = new Book(1,"Must be try learn",2008,98, localDate);
         Assert.assertTrue(validator.validate(book).isEmpty());
 
         book.setPrice(-9);
