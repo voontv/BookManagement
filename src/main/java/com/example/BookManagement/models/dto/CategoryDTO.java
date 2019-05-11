@@ -14,10 +14,10 @@ import javax.validation.constraints.NotBlank;
 public class CategoryDTO {
 
     @NonNull
-    int id;
+    private int id;
 
     @Length(min=1, max = 255)
     @NonNull
     @NotBlank(message = "Name is mandatory")
-    String name;
+    private String name;
 }
