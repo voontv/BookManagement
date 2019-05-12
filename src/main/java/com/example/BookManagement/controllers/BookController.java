@@ -5,6 +5,7 @@ import com.example.BookManagement.exceptions.NotFoundException;
 import com.example.BookManagement.models.dao.Book;
 import com.example.BookManagement.models.dto.BookDTO;
 import com.example.BookManagement.repositories.BookRepository;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -68,10 +69,13 @@ public class BookController {
     @PutMapping
     void put(@RequestBody BookDTO bookDTO) {
 
-        Date date = new Date();
-        if(bookRepository.findById(bookDTO.getId()).isPresent()) {
+        Optional<Book> bookOption = bookRepository.findById(bookDTO.getId());
+
+        if(bookOption.isPresent()) {
             Book book = bookDTOBookConverter.convert(bookDTO);
-            book.setUpdateAt(date);
+
+            book.setCreatedAt(bookOption.get().getCreatedAt());
+            book.setUpdateAt(new Date());
 
             bookRepository.save(book);
         } else {
