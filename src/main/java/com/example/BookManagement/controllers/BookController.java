@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +28,13 @@ public class BookController {
 
     @GetMapping
     List<BookDTO> get() {
-        System.out.println("############## listsize"+bookBookDTOConverter.convert(bookRepository.findAll(Sort.by("id"))).size());
+
         return bookBookDTOConverter.convert(bookRepository.findAll(Sort.by("id")));
     }
 
     @GetMapping("/{id}")
      BookDTO get(@PathVariable int id) {
+
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         if(optionalBook.isPresent()) {
@@ -44,6 +46,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id) {
+
         if(bookRepository.findById(id).isPresent()) {
             bookRepository.deleteById(id);
         } else {
@@ -53,15 +56,24 @@ public class BookController {
 
     @PostMapping
     void post(@RequestBody BookDTO bookDTO) {
+
         bookDTO.setId(0);
-        bookRepository.save(bookDTOBookConverter.convert(bookDTO));
+        Date date = new Date();
+        Book book = bookDTOBookConverter.convert(bookDTO);
+        book.setCreatedAt(date);
+
+        bookRepository.save(book);
     }
 
     @PutMapping
     void put(@RequestBody BookDTO bookDTO) {
 
+        Date date = new Date();
         if(bookRepository.findById(bookDTO.getId()).isPresent()) {
-            bookRepository.save(bookDTOBookConverter.convert(bookDTO));
+            Book book = bookDTOBookConverter.convert(bookDTO);
+            book.setUpdateAt(date);
+
+            bookRepository.save(book);
         } else {
             throw new NotFoundException(String.format("Book have id %d not found",bookDTO.getId()));
         }

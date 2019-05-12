@@ -16,12 +16,10 @@ public class BookDaoToBookDtoConverter extends Converter<Book, BookDTO> {
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setCategories(book.getCategories());
         bookDTO.setCover(book.getCover());
-        bookDTO.setCreatedAt(book.getCreatedAt());
         bookDTO.setDescription(book.getDescription());
         bookDTO.setPrice(book.getPrice());
         bookDTO.setPublishYear(book.getPublishYear());
         bookDTO.setTitle(book.getTitle());
-        bookDTO.setUpdateAt(book.getUpdateAt());
 
         return bookDTO;
     }

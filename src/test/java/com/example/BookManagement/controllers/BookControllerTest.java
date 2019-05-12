@@ -1,6 +1,7 @@
 package com.example.BookManagement.controllers;
 
 import com.example.BookManagement.models.dao.Book;
+import com.example.BookManagement.models.dao.Category;
 import com.example.BookManagement.models.dto.BookDTO;
 import com.example.BookManagement.repositories.BookRepository;
 import com.google.gson.Gson;
@@ -100,6 +101,8 @@ public class BookControllerTest {
 
     @Test
     public void testDeleteFound() throws Exception {
+        Category category = new Category(1,"Loves");
+        book1.getCategories().add(category);
 
         mockMvc.perform(delete("/api/books/"+book1.getId()))
                 .andExpect(status().isOk());
@@ -118,7 +121,7 @@ public class BookControllerTest {
     public void testPost() throws Exception {
         Gson gson = new Gson();
 
-        BookDTO bookDTO = new BookDTO(6,"try try and try",2018,200, new Date());
+        BookDTO bookDTO = new BookDTO(6,"try try and try",2018,200);
         String json = gson.toJson(bookDTO);
 
         mockMvc.perform(post("/api/books")
@@ -135,7 +138,7 @@ public class BookControllerTest {
     public void testPutFound() throws Exception {
         Gson gson = new Gson();
 
-        BookDTO bookDTO = new BookDTO(book1.getId(),"Try learn Java, good for skill",2019,138, new Date());
+        BookDTO bookDTO = new BookDTO(book1.getId(),"Try learn Java, good for skill",2019,138);
         String json = gson.toJson(bookDTO);
 
         mockMvc.perform(put("/api/books")
@@ -149,7 +152,7 @@ public class BookControllerTest {
     @Test
     public void testPutNotFound() throws Exception {
         Gson gson = new Gson();
-        BookDTO bookDTO = new BookDTO(10000,"Try learn Java, good for skill",2019,138, new Date());
+        BookDTO bookDTO = new BookDTO(10000,"Try learn Java, good for skill",2019,138);
 
         String json = gson.toJson(bookDTO);
         mockMvc.perform(put("/api/books")
